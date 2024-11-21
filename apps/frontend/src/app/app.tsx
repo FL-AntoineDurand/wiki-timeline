@@ -1,6 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { useState } from 'react';
-import { CheckCircledIcon, PlusIcon } from '@radix-ui/react-icons';
 import axios from 'axios';
 
 import './app.scss';
@@ -63,10 +62,7 @@ const Timeline = ({
   return (
     <div
       style={{
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        margin: '50px 50px',
+        margin: '50px 0',
       }}
     >
       <div style={{ margin: '0 50px' }}>
@@ -81,59 +77,54 @@ const Timeline = ({
         ))}
       </div>
 
-      <div style={{ position: 'relative', marginTop: '50px' }}>
+      <div
+        style={{
+          background: '#111',
+          margin: '50px',
+          border: 'solid 2px #222',
+          width: 'fit-content'
+        }}
+      >
         {articlesData.map((article, index) => (
-          <div
-            key={article.article}
-            style={{ display: 'flex', alignItems: 'center' }}
-          >
-            <div
-              style={{
-                width: '100%',
-              }}
-            >
-              {article.events.map((event) =>
-                event.end ? (
-                  <div
-                    key={event.summary}
-                    className="period"
-                    style={{
-                      left: `${
-                        (parseInt(event.begin.year) - timelineBegin) * zoom
-                      }px`,
-                      top: `calc((var(--event-height) + var(--event-vertical-margin)) * ${verticalPosition++})`,
-                      width: `${
-                        (parseInt(event.end.year) -
-                          parseInt(event.begin.year)) *
-                        zoom
-                      }px`,
-                      backgroundColor: articleColors[index],
-                    }}
-                  >
-                    <span className="event-text">
-                      {event.begin.year}-{event.end.year} {event.summary}
-                    </span>
-                  </div>
-                ) : (
-                  <div
-                    key={event.summary}
-                    className="event"
-                    style={{
-                      left: `${
-                        (parseInt(event.begin.year) - timelineBegin) * zoom
-                      }px`,
-                      top: `calc((var(--event-height) + var(--event-vertical-margin)) * ${verticalPosition++})`,
-                      backgroundColor: articleColors[index],
-                    }}
-                  >
-                    <span className="event-text">
-                      {event.begin.year} {event.summary}
-                    </span>
-                  </div>
-                )
-              )}
-            </div>
-          </div>
+          <>
+            {article.events.map((event) =>
+              event.end ? (
+                <div
+                  key={event.summary}
+                  className="period"
+                  style={{
+                    marginLeft: `${
+                      (parseInt(event.begin.year) - timelineBegin) * zoom
+                    }px`,
+                    width: `${
+                      (parseInt(event.end.year) - parseInt(event.begin.year)) *
+                      zoom
+                    }px`,
+                    backgroundColor: articleColors[index],
+                  }}
+                >
+                  <span className="event-text">
+                    {event.begin.year}-{event.end.year} {event.summary}
+                  </span>
+                </div>
+              ) : (
+                <div
+                  key={event.summary}
+                  className="event"
+                  style={{
+                    marginLeft: `${
+                      (parseInt(event.begin.year) - timelineBegin) * zoom
+                    }px`,
+                    backgroundColor: articleColors[index],
+                  }}
+                >
+                  <span className="event-text">
+                    {event.begin.year} {event.summary}
+                  </span>
+                </div>
+              )
+            )}
+          </>
         ))}
       </div>
     </div>
@@ -165,23 +156,50 @@ export function App() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center p-4">
-      <header className="flex items-center justify-between w-full mb-4">
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search..."
-          className="border p-2 rounded-md w-full"
-        />
-        <button
-          onClick={() => handleSearch(searchTerm)}
-          className="ml-2 p-2 rounded-md bg-blue-500 text-white"
-        >
-          <CheckCircledIcon />
-        </button>
+    <div>
+      <header
+        style={{
+          top: '20px',
+          display: 'flex',
+          gap: '15px',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          width: '90vw',
+          margin: '0 25px',
+        }}
+      >
+        <div style={{ flex: '0 1 400px', textAlign: 'center' }}></div>
+        <div style={{ flex: '1 0 600px', textAlign: 'center' }}>
+          <span style={{ color: 'white' }}>
+            Copy-Paste a Wikipedia article title
+          </span>
+          <input
+            style={{
+              margin: '0 15px',
+              border: '1px solid #ccc',
+              padding: '0.5rem',
+              borderRadius: '0.375rem',
+              width: '100%',
+              maxWidth: '500px',
+            }}
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search..."
+          />
+          <button
+            onClick={() => handleSearch(searchTerm)}
+            style={{
+              backgroundColor: '#3b82f6',
+              color: 'white',
+            }}
+          >
+            Go
+          </button>
+        </div>
+        <div style={{ flex: '0 1 400px', textAlign: 'center' }}></div>
       </header>
-      <main className="w-full">
+      <div style={{ marginTop: '100px' }}>
         {searchResults.length > 0 ? (
           <>
             <Timeline
@@ -202,7 +220,7 @@ export function App() {
         ) : (
           <p>No results found.</p>
         )}
-      </main>
+      </div>
     </div>
   );
 }

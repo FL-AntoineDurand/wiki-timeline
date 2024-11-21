@@ -3,11 +3,22 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   --event-height: 6px;
   --event-vertical-margin: 35px;
+  margin: 0;
+}
+
+input, button {
+  box-sizing: border-box;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 7px;
+  vertical-align: middle;
+  border-radius: calc(var(--event-height) / 2);
+  border: solid 1px white;
 }
 
 .period,
 .event {
-  position: absolute;
+  margin-top: var(--event-vertical-margin);
   height: var(--event-height);
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: calc(var(--event-height) / 2);

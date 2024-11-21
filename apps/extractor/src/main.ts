@@ -6,6 +6,20 @@ const openai = new OpenAI();
 
 //
 
+type Event = {
+  begin: {
+    year: string;
+    month?: string;
+    day?: string;
+  };
+  end: {
+    year: string;
+    month?: string;
+    day?: string;
+  };
+  summary: string;
+};
+
 //
 
 async function getWikipediaArticleLinks(title) {
@@ -101,7 +115,12 @@ ${text}`,
   const jsonContent = raw.split('```json')[1].split('```')[0].trim();
   const parsedJson = JSON.parse(jsonContent);
   console.log(parsedJson);
-  return parsedJson;
+
+  let events = parsedJson as Event[];
+  // TODO: sanitize (century)
+  events = events.filter((e) => /^\d+$/.test(e.begin.year));
+
+  return events;
 };
 
 //
